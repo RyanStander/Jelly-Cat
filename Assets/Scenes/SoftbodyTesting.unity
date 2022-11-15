@@ -330,6 +330,8 @@ GameObject:
   - component: {fileID: 354092396}
   - component: {fileID: 354092394}
   - component: {fileID: 354092397}
+  - component: {fileID: 354092399}
+  - component: {fileID: 354092400}
   m_Layer: 0
   m_Name: JellyMeshIteration2
   m_TagString: Untagged
@@ -379,10 +381,41 @@ BoxCollider:
   m_GameObject: {fileID: 354092393}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 0.846604, z: 1}
   m_Center: {x: 0, y: 0.076698005, z: 0}
+--- !u!114 &354092399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 354092393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b518ecf75f41f746889e51adb0c74d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 354092400}
+--- !u!143 &354092400
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 354092393}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 1.1
+  m_Radius: 0.51
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0.21, z: 0}
 --- !u!1 &616053580
 GameObject:
   m_ObjectHideFlags: 0
@@ -804,11 +837,11 @@ Cloth:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 973318014}
   m_Enabled: 1
-  m_StretchingStiffness: 0.8
-  m_BendingStiffness: 0.8
+  m_StretchingStiffness: 0.9
+  m_BendingStiffness: 0.9
   m_UseTethers: 0
   m_UseGravity: 1
-  m_Damping: 0
+  m_Damping: 0.6
   m_ExternalAcceleration: {x: 0, y: 0, z: 0}
   m_RandomAcceleration: {x: 0, y: 0, z: 0}
   m_WorldVelocityScale: 0.5
