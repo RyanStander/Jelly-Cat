@@ -50,8 +50,8 @@ namespace Softbody
         {
             SpringJoint sp = AddSpring(ref go1, ref go2, Spring, Damper);
 
-            //if (ViewLines == true)
-            //    AddLine(ref go1, ref go2);
+            if (ViewLines == true)
+                AddLine(ref go1, ref go2);
 
             return sp;
         }

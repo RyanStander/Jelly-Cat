@@ -51,30 +51,79 @@ namespace Softbody
             SoftbodyPhysics.AddCollider(ref F);
             SoftbodyPhysics.AddCollider(ref G);
             SoftbodyPhysics.AddCollider(ref H);
-        
-            //down
-            SoftbodyPhysics.AddSpring(ref A, ref D);
-            SoftbodyPhysics.AddSpring(ref B, ref C);
-            SoftbodyPhysics.AddSpring(ref F, ref G);
-            SoftbodyPhysics.AddSpring(ref E, ref H);
-
-            //across
-            SoftbodyPhysics.AddSpring(ref A, ref G);
-            SoftbodyPhysics.AddSpring(ref B, ref H);
-            SoftbodyPhysics.AddSpring(ref F, ref D);
-            SoftbodyPhysics.AddSpring(ref E, ref C);
-
-            //top
+            
+            //A
             SoftbodyPhysics.AddSpring(ref A, ref B);
-            SoftbodyPhysics.AddSpring(ref B, ref F);
-            SoftbodyPhysics.AddSpring(ref F, ref E);
-            SoftbodyPhysics.AddSpring(ref E, ref A);
+            SoftbodyPhysics.AddSpring(ref A, ref C);
+            SoftbodyPhysics.AddSpring(ref A, ref D);
+            SoftbodyPhysics.AddSpring(ref A, ref E);
+            SoftbodyPhysics.AddSpring(ref A, ref F);
+            SoftbodyPhysics.AddSpring(ref A, ref G);
+            SoftbodyPhysics.AddSpring(ref A, ref H);
 
-            //bottom
-            SoftbodyPhysics.AddSpring(ref D, ref C);
+            //B
+            SoftbodyPhysics.AddSpring(ref B, ref A);
+            SoftbodyPhysics.AddSpring(ref B, ref C);
+            SoftbodyPhysics.AddSpring(ref B, ref D);
+            SoftbodyPhysics.AddSpring(ref B, ref E);
+            SoftbodyPhysics.AddSpring(ref B, ref F);
+            SoftbodyPhysics.AddSpring(ref B, ref G);
+            SoftbodyPhysics.AddSpring(ref B, ref H);
+            
+            //C
+            SoftbodyPhysics.AddSpring(ref C, ref B);
+            SoftbodyPhysics.AddSpring(ref C, ref A);
+            SoftbodyPhysics.AddSpring(ref C, ref D);
+            SoftbodyPhysics.AddSpring(ref C, ref E);
+            SoftbodyPhysics.AddSpring(ref C, ref F);
             SoftbodyPhysics.AddSpring(ref C, ref G);
+            SoftbodyPhysics.AddSpring(ref C, ref H);
+            
+            //D
+            SoftbodyPhysics.AddSpring(ref D, ref B);
+            SoftbodyPhysics.AddSpring(ref D, ref C);
+            SoftbodyPhysics.AddSpring(ref D, ref A);
+            SoftbodyPhysics.AddSpring(ref D, ref E);
+            SoftbodyPhysics.AddSpring(ref D, ref F);
+            SoftbodyPhysics.AddSpring(ref D, ref G);
+            SoftbodyPhysics.AddSpring(ref D, ref H);
+            
+            //E
+            SoftbodyPhysics.AddSpring(ref E, ref B);
+            SoftbodyPhysics.AddSpring(ref E, ref C);
+            SoftbodyPhysics.AddSpring(ref E, ref D);
+            SoftbodyPhysics.AddSpring(ref E, ref A);
+            SoftbodyPhysics.AddSpring(ref E, ref F);
+            SoftbodyPhysics.AddSpring(ref E, ref G);
+            SoftbodyPhysics.AddSpring(ref E, ref H);
+            
+            //F
+            SoftbodyPhysics.AddSpring(ref F, ref B);
+            SoftbodyPhysics.AddSpring(ref F, ref C);
+            SoftbodyPhysics.AddSpring(ref F, ref D);
+            SoftbodyPhysics.AddSpring(ref F, ref E);
+            SoftbodyPhysics.AddSpring(ref F, ref A);
+            SoftbodyPhysics.AddSpring(ref F, ref G);
+            SoftbodyPhysics.AddSpring(ref F, ref H);
+            
+            //G
+            SoftbodyPhysics.AddSpring(ref G, ref B);
+            SoftbodyPhysics.AddSpring(ref G, ref C);
+            SoftbodyPhysics.AddSpring(ref G, ref D);
+            SoftbodyPhysics.AddSpring(ref G, ref E);
+            SoftbodyPhysics.AddSpring(ref G, ref F);
+            SoftbodyPhysics.AddSpring(ref G, ref A);
             SoftbodyPhysics.AddSpring(ref G, ref H);
+            
+            //H
+            SoftbodyPhysics.AddSpring(ref H, ref B);
+            SoftbodyPhysics.AddSpring(ref H, ref C);
             SoftbodyPhysics.AddSpring(ref H, ref D);
+            SoftbodyPhysics.AddSpring(ref H, ref E);
+            SoftbodyPhysics.AddSpring(ref H, ref F);
+            SoftbodyPhysics.AddSpring(ref H, ref G);
+            SoftbodyPhysics.AddSpring(ref H, ref A);
+            
         }
     }
 }
