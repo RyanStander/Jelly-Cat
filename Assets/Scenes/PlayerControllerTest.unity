@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 19195599}
   m_Layer: 7
   m_Name: Plane (4)
-  m_TagString: Untagged
+  m_TagString: Climbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -176,7 +176,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3433f630e169ae64aa4cb3e8610cff4f, type: 2}
+  - {fileID: 2100000, guid: 01135133e46182849a1c57d4e3e1e843, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -235,7 +235,7 @@ GameObject:
   - component: {fileID: 48520418}
   m_Layer: 7
   m_Name: Cylinder
-  m_TagString: Untagged
+  m_TagString: Climbable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -426,8 +426,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 354092396}
-  - component: {fileID: 354092400}
   - component: {fileID: 354092401}
+  - component: {fileID: 354092404}
   m_Layer: 0
   m_Name: JellyCatPlayer
   m_TagString: Untagged
@@ -453,24 +453,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!143 &354092400
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 354092393}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 1.1
-  m_Radius: 0.51
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0
-  m_Center: {x: 0, y: 0.21, z: 0}
 --- !u!114 &354092401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -486,14 +468,37 @@ MonoBehaviour:
   enviornmentLayer:
     serializedVersion: 2
     m_Bits: 128
-  jellyCore: {fileID: 1102723986}
-  controller: {fileID: 354092400}
-  movementSpeed: 2
-  jumpHeight: 3
-  gravityStrength: 10
-  wallDetectionBufferDistance: 0.5
-  groundedPlayer: 0
-  attachedToWall: 0
+  rigidBody: {fileID: 354092404}
+  jellyCore: {fileID: 1102723987}
+  jellyCoreCollider: {fileID: 1102723988}
+  directionIndicator: {fileID: 1896820777}
+  movementSpeed: 5
+  groundDrag: 5
+  airDrag: 1
+  airbornMovementMultiplier: 0.25
+  jumpStrength: 6.5
+  jumpCooldown: 0.15
+  skinWidthBuffer: 0.1
+  objectBeingClimbed: {fileID: 0}
+  climbDirection: {x: 0, y: 0, z: 0}
+  gravityDirection: {x: 0, y: -1, z: 0}
+  currentMovementState: 4
+--- !u!54 &354092404
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 354092393}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 2
+  m_Constraints: 112
+  m_CollisionDetection: 1
 --- !u!1 &616053580
 GameObject:
   m_ObjectHideFlags: 0
@@ -702,7 +707,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 639601144}
-  m_Material: {fileID: 13400000, guid: 8b7bdaa1d88022841b08bd90d0032bd5, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
@@ -885,6 +890,7 @@ GameObject:
   - component: {fileID: 973318018}
   - component: {fileID: 973318017}
   - component: {fileID: 973318016}
+  - component: {fileID: 973318020}
   m_Layer: 6
   m_Name: JellyCloth
   m_TagString: Untagged
@@ -1778,7 +1784,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 973318014}
   m_Material: {fileID: 13400000, guid: 8b7bdaa1d88022841b08bd90d0032bd5, type: 2}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.35
@@ -1791,6 +1797,22 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 973318014}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!54 &973318020
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 973318014}
+  serializedVersion: 2
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 2
 --- !u!1 &1009771536
 GameObject:
   m_ObjectHideFlags: 0
@@ -1816,13 +1838,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1009771536}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
-  m_LocalScale: {x: 1, y: 0.3, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1780273060}
-  m_RootOrder: 1
+  m_Father: {fileID: 1896820777}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1009771538
 MeshRenderer:
@@ -1883,6 +1905,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1102723987}
+  - component: {fileID: 1102723988}
   m_Layer: 0
   m_Name: JellyCatCore
   m_TagString: Untagged
@@ -1902,10 +1925,23 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1780273060}
+  - {fileID: 1896820777}
   m_Father: {fileID: 354092396}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &1102723988
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1102723986}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0.15, z: 0}
 --- !u!1 &1119283724
 GameObject:
   m_ObjectHideFlags: 0
@@ -2012,7 +2048,7 @@ GameObject:
   - component: {fileID: 1780273062}
   - component: {fileID: 1780273061}
   m_Layer: 0
-  m_Name: ForwardIndicator
+  m_Name: CylinderIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2029,11 +2065,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0.5}
   m_LocalScale: {x: 0.15, y: 0.5, z: 0.15}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1818829745}
-  - {fileID: 1009771537}
-  m_Father: {fileID: 1102723987}
-  m_RootOrder: 0
+  m_Children: []
+  m_Father: {fileID: 1896820777}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 90}
 --- !u!23 &1780273061
 MeshRenderer:
@@ -2110,13 +2144,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1818829744}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 0.3, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1780273060}
-  m_RootOrder: 0
+  m_Father: {fileID: 1896820777}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1818829746
 MeshRenderer:
@@ -2168,6 +2202,40 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1818829744}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1896820776
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1896820777}
+  m_Layer: 0
+  m_Name: ForwardIndicator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1896820777
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1896820776}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1009771537}
+  - {fileID: 1780273060}
+  - {fileID: 1818829745}
+  m_Father: {fileID: 1102723987}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1910856712
 GameObject:
   m_ObjectHideFlags: 0

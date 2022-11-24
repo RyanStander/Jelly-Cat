@@ -1,3 +1,4 @@
+using Extensions;
 using UnityEngine;
 
 /// <summary>
@@ -5,68 +6,252 @@ using UnityEngine;
 /// </summary>
 public class JellyCatController : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private LayerMask enviornmentLayer;
-    [SerializeField] private GameObject jellyCore;
-    [SerializeField] private CharacterController controller;
-    [SerializeField] private float movementSpeed = 2.0f;
-    [SerializeField] private float jumpHeight = 3.0f;
-    [SerializeField] [Range(0, 10)] private float gravityStrength = 10;
-    [SerializeField] [Range(0.25f, 1)] private float wallDetectionBufferDistance = 0.5f;
-    private Vector3 playerVelocity;
-    [SerializeField] private bool groundedPlayer;
-    [SerializeField] private bool attachedToWall;
+    [SerializeField] private Rigidbody rigidBody;
+    [SerializeField] private Transform jellyCore;
+    [SerializeField] private SphereCollider jellyCoreCollider;
+    [SerializeField] private Transform directionIndicator;
+
+    [Header("Player Movement")]
+    [SerializeField] [Range(0, 10)] private float movementSpeed = 5;
+    [SerializeField] [Range(1, 5)] private float groundDrag = 5f;
+    [SerializeField] [Range(1, 5)] private float airDrag = 1f;
+    [SerializeField] [Range(0, 1)] private float airbornMovementMultiplier = 0.25f;
+
+    [Header("Player Jumping")]
+    [SerializeField] [Range(0, 10)] private float jumpStrength = 6.5f;
+    [SerializeField] [Range(0, 1)] private float jumpCooldown = 0.15f;
+    private bool jumpRequested = false;
+    private bool canJump = true;
+    private bool exitingSurface = true;
+
+    [Header("Miscellaneous")]
+    [SerializeField] [Range(0.01f, 0.25f)] private float skinWidthBuffer = 0.1f;
+    [SerializeField] private GameObject objectBeingClimbed;
+    [SerializeField] private Vector3 climbDirection = Vector3.zero;
+    [SerializeField] private Vector3 gravityDirection = Vector3.down;
+    [SerializeField] private MovementState currentMovementState = MovementState.undefined;
+    private bool playerGrounded;
+    private bool playerClimbing;
+    private float horizontalInput = 0;
+    private float verticalInput = 0;
+
+    /// <summary>
+    /// The movement states that are applicable to the player.
+    /// </summary>
+    private enum MovementState
+    {
+        grounded,
+        climbing,
+        groundClimb,
+        airborn,
+        undefined
+    }
+
+    /// <summary>
+    /// Called once on the frame when a script is enabled.
+    /// </summary>
+    private void Start()
+    {
+        rigidBody.freezeRotation = true;
+        canJump = true;
+    }
 
     /// <summary>
     /// Called once every frame.
     /// </summary>
     private void Update()
     {
-        // Set & reset relevant data for the movement.
-        groundedPlayer = controller.isGrounded;
-        if (groundedPlayer && playerVelocity.y < 0)
-        {
-            playerVelocity.y = 0f;
-        }
+        SetMovementState();
 
-        // Handle logic relating to the players wall climbing.
-        HandleForWallClimb();
+        HandleInputs();
 
-        // Handle XZ movement.
-        var move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        controller.Move(move * (Time.deltaTime * movementSpeed));
-        if (move != Vector3.zero)
-        {
-            jellyCore.transform.forward = move;
-        }
+        HandleJumping();
 
-        // Handle the player jumping & height position.
-        if (Input.GetButtonDown("Jump") && groundedPlayer)
+        HandleMovement();
+        
+        HandleSpeed();
+    }
+
+    /// <summary>
+    /// Set the current movement state based on the ground and climb conditions of the player.
+    /// </summary>
+    private void SetMovementState()
+    {
+        // Check for conditions.
+        GroundCheck();
+        WallClimbCheck();
+
+        // Modify movement state based on current conditions.
+        if (playerGrounded && playerClimbing)
         {
-            playerVelocity.y += Mathf.Sqrt(jumpHeight * gravityStrength);
+            currentMovementState = MovementState.groundClimb;
         }
-        playerVelocity.y -= gravityStrength * Time.deltaTime;
-        controller.Move(playerVelocity * Time.deltaTime);
+        else if (playerGrounded)
+        {
+            currentMovementState = MovementState.grounded;
+        }
+        else if (playerClimbing)
+        {
+            currentMovementState = MovementState.climbing;
+        }
+        else
+        {
+            currentMovementState = MovementState.airborn;
+        }
+    }
+
+    /// <summary>
+    /// Check if the player is close enough to the ground to be considered grounded.
+    /// </summary>
+    private void GroundCheck()
+    {
+        if (Physics.Raycast(jellyCore.position, Vector3.down, out RaycastHit hit, jellyCoreCollider.radius + skinWidthBuffer, enviornmentLayer))
+        {
+            Debug.DrawLine(jellyCore.position, hit.point, CustomColors.DarkOrange);
+            playerGrounded = true;
+        }
+        else
+        {
+            playerGrounded = false;
+        }
     }
 
     /// <summary>
     /// Handle logic related to a player attaching to and climbing walls.
     /// </summary>
-    private void HandleForWallClimb()
+    private void WallClimbCheck()
     {
-        Vector3 origin = transform.position + controller.center;
-        Collider[] colliders = Physics.OverlapSphere(origin, controller.radius + wallDetectionBufferDistance, enviornmentLayer.value);
-        
+        Vector3 origin = jellyCore.position;
+        Collider[] colliders = Physics.OverlapSphere(origin, jellyCoreCollider.radius + skinWidthBuffer, enviornmentLayer.value);
+
+        objectBeingClimbed = null;
+        playerClimbing = false;
+        float closestDistance = float.MaxValue;
+        float itemDistance;
+
         foreach (var item in colliders)
         {
-            // Physics.ClosestPoint can only be used with a BoxCollider, SphereCollider, CapsuleCollider and a convex MeshCollider.
-            if(item is SphereCollider || item is CapsuleCollider || item is BoxCollider || item.IsConvexMesh())
+            // Ignore item if not tagged as climbable.
+            if (item.tag != "Climbable")
             {
-                Debug.DrawLine(origin, item.ClosestPoint(origin), CustomColors.DarkOrange);
+                continue;
+            }
+
+            Vector3 closestPoint;
+
+            // Physics.ClosestPoint can only be used with a BoxCollider, SphereCollider, CapsuleCollider and a convex MeshCollider.
+            if (item is SphereCollider || item is CapsuleCollider || item is BoxCollider || item.IsConvexMesh())
+            {
+                closestPoint = item.ClosestPoint(origin);
             }
             else
             {
-                Debug.DrawLine(origin, item.ClosestPointOnBounds(origin), CustomColors.DarkOrange);
+                closestPoint = item.ClosestPointOnBounds(origin);
             }
+
+            Debug.DrawLine(origin, closestPoint, CustomColors.DarkOrange);
+            itemDistance = Vector3.Distance(origin, closestPoint);
+
+            // Attach to climbable object if within range.
+            if (itemDistance < closestDistance)
+            {
+                closestDistance = itemDistance;
+                objectBeingClimbed = item.gameObject;
+                playerClimbing = true;
+                climbDirection = (closestPoint - origin).normalized;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Saves current user inputs to process in later handler methods.
+    /// </summary>
+    private void HandleInputs()
+    {
+        horizontalInput = Input.GetAxis("Horizontal");
+        verticalInput = Input.GetAxis("Vertical");
+
+        // Handle the player jumping & height position.
+        if (Input.GetButtonDown("Jump") && (playerGrounded || playerClimbing))
+        {
+            jumpRequested = true;
+        }
+
+        // Temporary visualization of flat inputs.
+        if (new Vector3(horizontalInput, 0, verticalInput) != Vector3.zero)
+        {
+            directionIndicator.forward = new Vector3(horizontalInput, 0, verticalInput);
+        }
+    }
+
+    /// <summary>
+    /// Applies a jump force to the player if requested and able to.
+    /// </summary>
+    private void HandleJumping()
+    {
+        // Handle the player jumping.
+        if (jumpRequested && canJump)
+        {
+            canJump = false;
+            jumpRequested = false;
+            exitingSurface = true;
+
+            Invoke(nameof(JumpReset), jumpCooldown);
+
+            if (playerGrounded)
+            {
+                rigidBody.AddForce(-gravityDirection * jumpStrength, ForceMode.Impulse);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Resets boolean that dictates if a player can jump.
+    /// </summary>
+    private void JumpReset()
+    {
+        exitingSurface = false;
+        canJump = true;
+    }
+
+    /// <summary>
+    /// Uses the player inputs and moves them in a requested direction. 
+    /// </summary>
+    private void HandleMovement()
+    {
+        // Calculate the direction of movement.
+        var movementDirection = new Vector3(horizontalInput, 0, verticalInput).normalized;
+
+        // Move the player based on current states.
+        if (currentMovementState == MovementState.grounded)
+        {
+            rigidBody.AddForce(movementDirection * movementSpeed, ForceMode.Force);
+        }
+        else if(currentMovementState == MovementState.airborn)
+        {
+            rigidBody.AddForce(movementDirection * movementSpeed * airbornMovementMultiplier, ForceMode.Force);
+        }
+
+        // Apply gravity only if the player is not climbing.
+        rigidBody.useGravity = currentMovementState != MovementState.climbing;
+    }
+
+    /// <summary>
+    /// Apply drag and limits to the player speed.
+    /// </summary>
+    private void HandleSpeed()
+    {
+        // Apply drag force to the player based on their grounded condition.
+        rigidBody.drag = (playerGrounded || playerClimbing) ? groundDrag : airDrag;
+
+        // Limit speed to its intended maximum.
+        Vector3 flattenedVelocity = new Vector3(rigidBody.velocity.x, 0f, rigidBody.velocity.z);
+        if (flattenedVelocity.magnitude > movementSpeed)
+        {
+            Vector3 clampedVelocity = flattenedVelocity.normalized * movementSpeed;
+            rigidBody.velocity = new Vector3(clampedVelocity.x, rigidBody.velocity.y, clampedVelocity.z);
         }
     }
 
@@ -77,10 +262,21 @@ public class JellyCatController : MonoBehaviour
     {
         // Draw a yellow sphere around the player core for its wall detection range.
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, controller.radius + wallDetectionBufferDistance);
+        Gizmos.DrawWireSphere(jellyCore.position + jellyCoreCollider.center, jellyCoreCollider.radius + skinWidthBuffer);
 
-        // Draw a green sphere around the player to visualize its location.
+        // Draw a red sphere around the player core to visualize its location.
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, controller.radius);
+        Gizmos.DrawWireSphere(jellyCore.position + jellyCoreCollider.center, jellyCoreCollider.radius);
+    }
+
+    /// <summary>
+    /// Autofill missing components on validation (if possible).
+    /// </summary>
+    private void OnValidate()
+    {
+        if(jellyCoreCollider == null)
+        {
+            jellyCoreCollider = jellyCore.GetComponent<SphereCollider>();
+        }
     }
 }
