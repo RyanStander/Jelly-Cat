@@ -18,6 +18,7 @@ public class JellyCatController : MonoBehaviour
     [SerializeField] [Range(1, 5)] private float groundDrag = 5f;
     [SerializeField] [Range(1, 5)] private float airDrag = 1f;
     [SerializeField] [Range(0, 1)] private float airbornMovementMultiplier = 0.25f;
+    [SerializeField] [Range(0, 10)] private float climbDirectionGravity = 5;
 
     [Header("Player Jumping")]
     [SerializeField] [Range(0, 10)] private float jumpStrength = 6.5f;
@@ -29,7 +30,7 @@ public class JellyCatController : MonoBehaviour
     [Header("Miscellaneous")]
     [SerializeField] [Range(0.01f, 0.25f)] private float skinWidthBuffer = 0.1f;
     [SerializeField] private GameObject objectBeingClimbed;
-    [SerializeField] private Vector3 climbDirection = Vector3.zero;
+    [SerializeField] private Vector3 climbDirection = Vector3.down;
     [SerializeField] private Vector3 gravityDirection = Vector3.down;
     [SerializeField] private MovementState currentMovementState = MovementState.undefined;
     private bool playerGrounded;
@@ -163,6 +164,12 @@ public class JellyCatController : MonoBehaviour
                 climbDirection = (closestPoint - origin).normalized;
             }
         }
+
+        // Set climb direction to gravity default value if no object is being climbed.
+        if(objectBeingClimbed == null)
+        {
+            climbDirection = gravityDirection;
+        }
     }
 
     /// <summary>
@@ -191,30 +198,29 @@ public class JellyCatController : MonoBehaviour
     /// </summary>
     private void HandleJumping()
     {
-        // Handle the player jumping.
         if (jumpRequested && canJump)
         {
             canJump = false;
             jumpRequested = false;
-            exitingSurface = true;
 
             Invoke(nameof(JumpReset), jumpCooldown);
 
-            if (playerGrounded)
+            if (currentMovementState == MovementState.grounded)
             {
                 rigidBody.AddForce(-gravityDirection * jumpStrength, ForceMode.Impulse);
+            }
+            else if (currentMovementState == MovementState.climbing)
+            {
+                // For now the jump is directly away from the climbed object.
+                rigidBody.AddForce(-climbDirection * jumpStrength, ForceMode.Impulse);
             }
         }
     }
 
     /// <summary>
-    /// Resets boolean that dictates if a player can jump.
+    /// Reset boolean that dictates if a player can jump.
     /// </summary>
-    private void JumpReset()
-    {
-        exitingSurface = false;
-        canJump = true;
-    }
+    private void JumpReset() => canJump = true;
 
     /// <summary>
     /// Uses the player inputs and moves them in a requested direction. 
@@ -225,9 +231,20 @@ public class JellyCatController : MonoBehaviour
         var movementDirection = new Vector3(horizontalInput, 0, verticalInput).normalized;
 
         // Move the player based on current states.
-        if (currentMovementState == MovementState.grounded)
+        if (currentMovementState == MovementState.grounded || currentMovementState == MovementState.groundClimb)
         {
             rigidBody.AddForce(movementDirection * movementSpeed, ForceMode.Force);
+        }
+        // TODO: Implement functioning movement for any surface direction.
+        else if(currentMovementState == MovementState.climbing)
+        {
+            //TO BE ADDED.
+            Vector3 force = Vector3.zero;
+            //force = GetNormal(movementDirection, climbDirection, Vector3.forward).normalized;
+            //force = Vector3.Reflect(movementDirection, climbDirection);
+            //force = Vector3.Cross(movementDirection, climbDirection);
+
+            rigidBody.AddForce(force * movementSpeed, ForceMode.Force);
         }
         else if(currentMovementState == MovementState.airborn)
         {
@@ -236,6 +253,25 @@ public class JellyCatController : MonoBehaviour
 
         // Apply gravity only if the player is not climbing.
         rigidBody.useGravity = currentMovementState != MovementState.climbing;
+
+        // Apply artificial gravity based on the climb state.
+        if(currentMovementState == MovementState.climbing)
+        {
+            rigidBody.AddForce(climbDirection * climbDirectionGravity, ForceMode.Acceleration);
+        }
+    }
+
+    /// <summary>
+    /// Get the normal to a triangle from the three corner points, a, b and c.
+    /// </summary>
+    Vector3 GetNormal(Vector3 a, Vector3 b, Vector3 c)
+    {
+        // Find vectors corresponding to two of the sides of the triangle.
+        Vector3 side1 = b - a;
+        Vector3 side2 = c - a;
+
+        // Cross the vectors to get a perpendicular vector, then normalize it.
+        return Vector3.Cross(side1, side2).normalized;
     }
 
     /// <summary>
@@ -248,6 +284,8 @@ public class JellyCatController : MonoBehaviour
 
         // Limit speed to its intended maximum.
         Vector3 flattenedVelocity = new Vector3(rigidBody.velocity.x, 0f, rigidBody.velocity.z);
+        flattenedVelocity = Vector3.Project(flattenedVelocity, gravityDirection);
+
         if (flattenedVelocity.magnitude > movementSpeed)
         {
             Vector3 clampedVelocity = flattenedVelocity.normalized * movementSpeed;
