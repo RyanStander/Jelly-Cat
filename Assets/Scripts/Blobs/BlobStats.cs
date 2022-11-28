@@ -10,6 +10,8 @@ namespace Blobs
         private float blobScore=10;
         private void OnTriggerEnter(Collider other)
         {
+            //TODO: implement score increase
+            
             if (!other.gameObject.CompareTag("Player")) return;
             EventManager.currentManager.AddEvent(new SendBlobScore(blobScore));
             Destroy(transform.parent.gameObject);
