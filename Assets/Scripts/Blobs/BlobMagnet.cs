@@ -27,7 +27,6 @@ namespace Blobs
         
         private void FixedUpdate()
         {
-            CheckForPlayer();
 
             MoveToTarget();
         }
@@ -37,21 +36,6 @@ namespace Blobs
             if (other.gameObject.CompareTag("Player"))
             {
                 target = other.gameObject.transform;
-            }
-        }
-
-        private void CheckForPlayer()
-        {
-            var didHit = Physics.SphereCast(blobTransform.position, radius, Vector3.zero, out var hit);
-
-            if (!didHit)
-                return;
-            
-            Debug.Log("hit");
-            
-            if (hit.collider.gameObject.CompareTag("Player"))
-            {
-                target = hit.collider.gameObject.transform;
             }
         }
 
