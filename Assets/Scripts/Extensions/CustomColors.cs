@@ -8,8 +8,6 @@ namespace Extensions
     /// </summary>
     public static class CustomColors
     {
-        #region Base Colors
         public static Color DarkOrange => new(1, 0.5490196f, 0);
-        #endregion
     }
 }

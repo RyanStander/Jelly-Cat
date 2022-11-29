@@ -53,15 +53,6 @@ namespace Player
         }
 
         /// <summary>
-        /// Called once on the frame when a script is enabled.
-        /// </summary>
-        private void Start()
-        {
-            rigidBody.freezeRotation = true;
-            canJump = true;
-        }
-
-        /// <summary>
         /// Called once every frame.
         /// </summary>
         private void Update()
@@ -315,6 +306,7 @@ namespace Player
             {
                 jellyCoreCollider = jellyCore.GetComponent<SphereCollider>();
             }
+            rigidBody.freezeRotation = true;
         }
     }
 }
