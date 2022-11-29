@@ -24,7 +24,8 @@ namespace Player
         [SerializeField] [Range(0, 10)] private float climbDirectionGravity = 5;
 
         [Header("Player Jumping")]
-        [SerializeField] [Range(0, 10)] private float jumpStrength = 6.5f;
+        [SerializeField] [Range(0, 10)] private float jumpStrength = 8f;
+        [SerializeField] [Range(0, 10)] private float angularWallJumpStrength = 6f;
         [SerializeField] [Range(0, 1)] private float jumpCooldown = 0.15f;
         private bool jumpRequested = false;
         private bool canJump = true;
@@ -206,8 +207,12 @@ namespace Player
                 }
                 else if (currentMovementState == MovementState.climbing)
                 {
-                    // For now the jump is directly away from the climbed object.
-                    rigidBody.AddForce(-climbDirection * jumpStrength, ForceMode.Impulse);
+                    Vector3 jumpForceVector = -climbDirection * jumpStrength;
+                    if (verticalInput > 0)
+                    {
+                        jumpForceVector.y += angularWallJumpStrength;
+                    }
+                    rigidBody.AddForce(jumpForceVector, ForceMode.Impulse);
                 }
             }
         }

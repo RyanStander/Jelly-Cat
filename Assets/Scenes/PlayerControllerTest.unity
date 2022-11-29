@@ -479,6 +479,7 @@ MonoBehaviour:
   airbornMovementMultiplier: 0.25
   climbDirectionGravity: 5
   jumpStrength: 8
+  angularWallJumpStrength: 6
   jumpCooldown: 0.15
   skinWidthBuffer: 0.1
   currentMovementState: 4
