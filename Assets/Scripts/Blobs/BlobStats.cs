@@ -6,13 +6,17 @@ namespace Blobs
 {
     public class BlobStats : MonoBehaviour
     {
-        [Tooltip("This should be kept to a small amount as this is percent increase")][SerializeField]
-        private float blobScore=10;
+        [Tooltip("This should be kept to a small amount as this is percent increase")] [SerializeField]
+        private float blobScore = 10;
+
+        //Sends score increase if the player collides with the blob
         private void OnTriggerEnter(Collider other)
         {
             //TODO: implement score increase
+
+            if (!other.gameObject.CompareTag("Player")) 
+                return;
             
-            if (!other.gameObject.CompareTag("Player")) return;
             EventManager.currentManager.AddEvent(new SendBlobScore(blobScore));
             Destroy(transform.parent.gameObject);
         }
