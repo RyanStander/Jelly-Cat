@@ -7,9 +7,6 @@ namespace UI
     {
         [SerializeField] private string sceneToLoad;
 
-        public void LoadSceneByName()
-        {
-            SceneManager.LoadScene(sceneToLoad);
-        }
+        public void LoadSceneByName() => SceneManager.LoadScene(sceneToLoad);
     }
 }
