@@ -6,6 +6,7 @@ namespace Events
     public enum EventType 
     {
         SendBlobScore,
-    
+        SetScoreStats,
+        UpdateCurrentScore,
     }
 }
