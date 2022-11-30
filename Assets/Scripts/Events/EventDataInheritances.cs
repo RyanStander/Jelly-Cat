@@ -4,7 +4,7 @@ namespace Events
 {
     public class SendBlobScore : EventData
     {
-        public float BlobScore;
+        public readonly float BlobScore;
 
         public SendBlobScore(float blobScore) : base(EventType.SendBlobScore)
         {
@@ -14,10 +14,10 @@ namespace Events
     
     public class SetScoreStats : EventData
     {
-        public float TotalScore;
-        public float StartingScore;
+        public readonly float TotalScore;
+        public readonly float StartingScore;
 
-        public SetScoreStats(float totalScore,float startingScore) : base(EventType.SendBlobScore)
+        public SetScoreStats(float totalScore,float startingScore) : base(EventType.SetScoreStats)
         {
             StartingScore = startingScore;
             TotalScore = totalScore;
@@ -26,11 +26,28 @@ namespace Events
     
     public class UpdateCurrentScore : EventData
     {
-        public float CurrentScore;
+        public readonly float CurrentScore;
 
-        public UpdateCurrentScore(float currentScore) : base(EventType.SendBlobScore)
+        public UpdateCurrentScore(float currentScore) : base(EventType.UpdateCurrentScore)
         {
             CurrentScore = currentScore;
+        }
+    }
+    
+    public class SetTime : EventData
+    {
+        public readonly float Time;
+
+        public SetTime(float time) : base(EventType.SetTime)
+        {
+            Time = time;
+        }
+    }
+    
+    public class TimerExpired : EventData
+    {
+        public TimerExpired() : base(EventType.TimerExpired)
+        {
         }
     }
 }

@@ -8,5 +8,8 @@ namespace Events
         SendBlobScore,
         SetScoreStats,
         UpdateCurrentScore,
+        
+        SetTime,
+        TimerExpired,
     }
 }

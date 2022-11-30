@@ -485,6 +485,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 992086677703929897}
+  - component: {fileID: 98692335}
   m_Layer: 5
   m_Name: TimeDial
   m_TagString: Untagged
@@ -515,6 +516,19 @@ RectTransform:
   m_AnchoredPosition: {x: 667, y: 395}
   m_SizeDelta: {x: 180.988, y: 42.351}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &98692335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5705832926358784469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d668faddad55d743b0e3b9a02a4d9fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 7317277501696700696}
 --- !u!1 &5831470619100854934
 GameObject:
   m_ObjectHideFlags: 0
@@ -885,6 +899,8 @@ GameObject:
   m_Component:
   - component: {fileID: 117838216824352063}
   - component: {fileID: 4450523049740105065}
+  - component: {fileID: 659943977}
+  - component: {fileID: 659943979}
   m_Layer: 5
   m_Name: BlobbynessMeter
   m_TagString: Untagged
@@ -966,6 +982,34 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &659943977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8562089165668345126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 981a3e24f75e7694a97bb76e0b97f51d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 4450523049740105065}
+  text: {fileID: 4878553197419203189}
+--- !u!114 &659943979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8562089165668345126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31740fc3674581e4aadb31b89162dd28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreSlider: {fileID: 4450523049740105065}
+  sliderSpeed: 0.1
 --- !u!1 &8710352842013237277
 GameObject:
   m_ObjectHideFlags: 0
@@ -1113,7 +1157,7 @@ GameObject:
   - component: {fileID: 6914864346777842543}
   - component: {fileID: 143690231478187210}
   m_Layer: 5
-  m_Name: TimeDial
+  m_Name: TimeBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
