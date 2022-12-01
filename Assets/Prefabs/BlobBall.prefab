@@ -930,7 +930,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1358ec8214f10b64a96d9d46f872afb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blobScore: 10
+  blobScore: 20
 --- !u!1 &2838077244550942355
 GameObject:
   m_ObjectHideFlags: 0
@@ -977,8 +977,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b17469c461d6a64409924638872a689c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showGizmo: 0
-  radius: 1.27
   attractionSpeed: 0.1
 --- !u!135 &2838077244550942356
 SphereCollider:
