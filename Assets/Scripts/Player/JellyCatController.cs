@@ -39,6 +39,7 @@ namespace Player
         private bool playerClimbing;
         private float horizontalInput = 0;
         private float verticalInput = 0;
+        private float scaledWidthBuffer = 0;
 
         /// <summary>
         /// The movement states that are applicable to the player.
@@ -57,6 +58,8 @@ namespace Player
         /// </summary>
         private void Update()
         {
+            UpdateScaledWidthBuffer();
+
             SetMovementState();
 
             HandleInputs();
@@ -67,6 +70,12 @@ namespace Player
 
             HandleSpeed();
         }
+
+        /// <summary>
+        /// Updates the scaled width buffer, which gets added onto ground and wall checks to compensate for a static collider radius.
+        /// The update assumes the scaling of the parent object is uniform.
+        /// </summary>
+        private void UpdateScaledWidthBuffer() => scaledWidthBuffer = jellyCoreCollider.radius * transform.localScale.y;
 
         /// <summary>
         /// Set the current movement state based on the ground and climb conditions of the player.
@@ -101,7 +110,7 @@ namespace Player
         /// </summary>
         private void GroundCheck()
         {
-            if (Physics.Raycast(jellyCore.position, Vector3.down, out RaycastHit hit, jellyCoreCollider.radius + skinWidthBuffer, enviornmentLayer))
+            if (Physics.Raycast(jellyCore.position, Vector3.down, out RaycastHit hit, jellyCoreCollider.radius + scaledWidthBuffer + skinWidthBuffer, enviornmentLayer))
             {
                 Debug.DrawLine(jellyCore.position, hit.point, CustomColors.DarkOrange);
                 playerGrounded = true;
@@ -118,7 +127,7 @@ namespace Player
         private void WallClimbCheck()
         {
             Vector3 origin = jellyCore.position;
-            Collider[] colliders = Physics.OverlapSphere(origin, jellyCoreCollider.radius + skinWidthBuffer, enviornmentLayer.value);
+            Collider[] colliders = Physics.OverlapSphere(origin, jellyCoreCollider.radius + scaledWidthBuffer + skinWidthBuffer, enviornmentLayer.value);
 
             objectBeingClimbed = null;
             playerClimbing = false;
@@ -290,11 +299,11 @@ namespace Player
         {
             // Draw a yellow sphere around the player core for its wall detection range.
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(jellyCore.position + jellyCoreCollider.center, jellyCoreCollider.radius + skinWidthBuffer);
+            Gizmos.DrawWireSphere(jellyCore.position + jellyCoreCollider.center, jellyCoreCollider.radius + scaledWidthBuffer + skinWidthBuffer);
 
             // Draw a red sphere around the player core to visualize its location.
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(jellyCore.position + jellyCoreCollider.center, jellyCoreCollider.radius);
+            Gizmos.DrawWireSphere(jellyCore.position + jellyCoreCollider.center, jellyCoreCollider.radius + scaledWidthBuffer);
         }
 
         /// <summary>
