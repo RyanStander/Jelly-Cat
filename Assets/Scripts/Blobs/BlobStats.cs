@@ -12,8 +12,6 @@ namespace Blobs
         //Sends score increase if the player collides with the blob
         private void OnTriggerEnter(Collider other)
         {
-            //TODO: implement score increase
-
             if (!other.gameObject.CompareTag("Player")) 
                 return;
             
