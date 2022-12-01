@@ -924,7 +924,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c085a5a7bd505d459fb1eedeaf7315d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: NoSceneName
+  sceneToLoad: GrayBoxLevelTwo
 --- !u!1 &2767294085611182031
 GameObject:
   m_ObjectHideFlags: 0
@@ -1207,7 +1207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c085a5a7bd505d459fb1eedeaf7315d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: NoSceneName
+  sceneToLoad: MainMenu
 --- !u!1 &3244118738691600182
 GameObject:
   m_ObjectHideFlags: 0
@@ -1929,7 +1929,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c085a5a7bd505d459fb1eedeaf7315d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: NoSceneName
+  sceneToLoad: GrayBoxLevelTwo
 --- !u!1 &4418497998092753261
 GameObject:
   m_ObjectHideFlags: 0
@@ -3480,7 +3480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c085a5a7bd505d459fb1eedeaf7315d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: NoSceneName
+  sceneToLoad: MainMenu
 --- !u!1 &9164169110199074881
 GameObject:
   m_ObjectHideFlags: 0
