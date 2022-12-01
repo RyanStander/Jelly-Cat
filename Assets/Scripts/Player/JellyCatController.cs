@@ -233,18 +233,18 @@ namespace Player
             // Move the player based on current states.
             if (currentMovementState == MovementState.grounded || currentMovementState == MovementState.groundClimb)
             {
-                rigidBody.AddForce(movementDirection * movementSpeed, ForceMode.Force);
+                rigidBody.AddForce(movementDirection * movementSpeed, ForceMode.Impulse);
             }
             // TODO: Implement functioning movement for any surface direction.
             else if (currentMovementState == MovementState.climbing)
             {
                 Vector3 climbMovementDirection = Vector3.Reflect(-climbDirection * horizontalInput, Vector3.forward);
                 movementDirection = new Vector3(climbMovementDirection.z, verticalInput, climbMovementDirection.x).normalized;
-                rigidBody.AddForce(movementDirection * movementSpeed, ForceMode.Force);
+                rigidBody.AddForce(movementDirection * movementSpeed, ForceMode.Impulse);
             }
             else if (currentMovementState == MovementState.airborn)
             {
-                rigidBody.AddForce(movementDirection * movementSpeed * airbornMovementMultiplier, ForceMode.Force);
+                rigidBody.AddForce(movementDirection * movementSpeed * airbornMovementMultiplier, ForceMode.Impulse);
             }
 
             // Apply gravity only if the player is not climbing.
