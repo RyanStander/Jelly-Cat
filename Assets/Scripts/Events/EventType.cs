@@ -8,8 +8,9 @@ namespace Events
         SendBlobScore,
         SetScoreStats,
         UpdateCurrentScore,
-        
-        SetTime,
-        TimerExpired,
+
+        PlayerAttemptLevelCompletion,
+        DidPlayerCompleteLevel,
+        PlayerDied,
     }
 }

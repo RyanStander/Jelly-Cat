@@ -11,19 +11,21 @@ namespace Events
             BlobScore = blobScore;
         }
     }
-    
+
     public class SetScoreStats : EventData
     {
-        public readonly float TotalScore;
+        public readonly float RequiredScore;
         public readonly float StartingScore;
+        public readonly float TimeLimit;
 
-        public SetScoreStats(float totalScore,float startingScore) : base(EventType.SetScoreStats)
+        public SetScoreStats(float requiredScore, float startingScore, float timeLimit) : base(EventType.SetScoreStats)
         {
             StartingScore = startingScore;
-            TotalScore = totalScore;
+            RequiredScore = requiredScore;
+            TimeLimit = timeLimit;
         }
     }
-    
+
     public class UpdateCurrentScore : EventData
     {
         public readonly float CurrentScore;
@@ -31,6 +33,30 @@ namespace Events
         public UpdateCurrentScore(float currentScore) : base(EventType.UpdateCurrentScore)
         {
             CurrentScore = currentScore;
+        }
+    }
+
+    public class PlayerAttemptLevelCompletion : EventData
+    {
+        public PlayerAttemptLevelCompletion() : base(EventType.PlayerAttemptLevelCompletion)
+        {
+        }
+    }
+
+    public class PlayerCompletedLevel : EventData
+    {
+        public readonly float FinalScore;
+
+        public PlayerCompletedLevel(float finalScore) : base(EventType.DidPlayerCompleteLevel)
+        {
+            FinalScore = finalScore;
+        }
+    }
+
+    public class PlayerDied : EventData
+    {
+        public PlayerDied() : base(EventType.PlayerDied)
+        {
         }
     }
 }

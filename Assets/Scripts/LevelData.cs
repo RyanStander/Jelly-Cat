@@ -6,11 +6,18 @@ using UnityEngine;
 /// </summary>
 public class LevelData : MonoBehaviour
 {
-    [SerializeField] private float maxScore=200;
-    [SerializeField] private float startingScore=100;
+    [Tooltip("This is the intended score to succeed, you can go higher...")] [SerializeField]
+    private float requiredScore = 200;
+
+    [Tooltip("This is the score you start with, also affects character starting scale")] [SerializeField]
+    private float startingScore = 100;
+
+    [Tooltip("After this amount of time has passed, the player will not receive any points for their speed")]
+    [SerializeField]
+    private float timeLimit = 120;
 
     private void Awake()
     {
-        EventManager.currentManager.AddEvent(new SetScoreStats(maxScore,startingScore));
+        EventManager.currentManager.AddEvent(new SetScoreStats(requiredScore, startingScore,timeLimit));
     }
 }

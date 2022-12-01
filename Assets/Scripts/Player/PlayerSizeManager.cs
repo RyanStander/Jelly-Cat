@@ -1,3 +1,4 @@
+using System;
 using Events;
 using UnityEngine;
 using EventType = Events.EventType;
@@ -9,6 +10,7 @@ namespace Player
     /// </summary>
     public class PlayerSizeManager : MonoBehaviour
     {
+        [SerializeField] private Cloth playerCloth;
         private float playerScore=100;
 
         private void UpdatePlayerScale()
@@ -17,9 +19,18 @@ namespace Player
             var scaleIncrease = playerScore / 100;
 
             transform.localScale = Vector3.one * scaleIncrease;
+
+            playerCloth.enabled = false;
+            playerCloth.enabled = true;
         }
 
         #region OnEvents
+
+        private void OnValidate()
+        {
+            if (playerCloth == null)
+                GetComponentInChildren<Cloth>();
+        }
 
         private void OnEnable()
         {
