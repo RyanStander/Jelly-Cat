@@ -56,9 +56,7 @@ public class ScoreManager : MonoBehaviour
         if (eventData is PlayerAttemptLevelCompletion)
         {
             if (currentScore >= requiredScore)
-            {
-                EventManager.currentManager.AddEvent(new DidPlayerCompleteLevel(true, DetermineFinalScore()));
-            }
+                EventManager.currentManager.AddEvent(new PlayerCompletedLevel(DetermineFinalScore()));
         }
         else
         {
@@ -86,7 +84,7 @@ public class ScoreManager : MonoBehaviour
     {
         if (eventData is UpdateCurrentScore updateCurrentScore)
         {
-            currentScore = updateCurrentScore.CurrentScore / 100;
+            currentScore = updateCurrentScore.CurrentScore;
         }
         else
         {

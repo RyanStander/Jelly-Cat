@@ -43,14 +43,12 @@ namespace Events
         }
     }
 
-    public class DidPlayerCompleteLevel : EventData
+    public class PlayerCompletedLevel : EventData
     {
-        public readonly bool DidComplete;
         public readonly float FinalScore;
 
-        public DidPlayerCompleteLevel(bool didComplete, float finalScore) : base(EventType.DidPlayerCompleteLevel)
+        public PlayerCompletedLevel(float finalScore) : base(EventType.DidPlayerCompleteLevel)
         {
-            DidComplete = didComplete;
             FinalScore = finalScore;
         }
     }
