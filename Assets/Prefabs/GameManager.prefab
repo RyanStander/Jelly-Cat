@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 9044909301918665989}
   - component: {fileID: 2698597642564363642}
   - component: {fileID: 145906123}
+  - component: {fileID: 3439039848391686198}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -57,6 +58,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e696be65427ed14bac1e5283b2fc656, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxScore: 200
+  requiredScore: 200
   startingScore: 100
-  levelTime: 300
+  timeLimit: 120
+--- !u!114 &3439039848391686198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6840591155266247212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dd147e8104c492c925dafb08e4ce1bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timer: {fileID: 0}

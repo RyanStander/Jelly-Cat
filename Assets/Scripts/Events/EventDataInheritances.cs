@@ -14,13 +14,15 @@ namespace Events
     
     public class SetScoreStats : EventData
     {
-        public readonly float TotalScore;
+        public readonly float RequiredScore;
         public readonly float StartingScore;
+        public readonly float TimeLimit;
 
-        public SetScoreStats(float totalScore,float startingScore) : base(EventType.SetScoreStats)
+        public SetScoreStats(float requiredScore,float startingScore,float timeLimit) : base(EventType.SetScoreStats)
         {
             StartingScore = startingScore;
-            TotalScore = totalScore;
+            RequiredScore = requiredScore;
+            TimeLimit = timeLimit;
         }
     }
     
@@ -32,5 +34,23 @@ namespace Events
         {
             CurrentScore = currentScore;
         }
+    }
+
+    public class PlayerAttemptLevelCompletion : EventData
+    {
+        public PlayerAttemptLevelCompletion() : base(EventType.PlayerAttemptLevelCompletion)
+        {
+        }
+    }
+
+    public class DidPlayerCompleteLevel : EventData
+    {
+        public readonly bool DidComplete;
+        public readonly float FinalScore;
+        public DidPlayerCompleteLevel(bool didComplete,float finalScore) : base(EventType.DidPlayerCompleteLevel)
+        {
+            DidComplete = didComplete;
+            FinalScore = finalScore;
+        } 
     }
 }

@@ -16,6 +16,11 @@ namespace UI
             DisplayTime();
         }
 
+        public float GetDuration()
+        {
+            return duration;
+        }
+
         //Updates and shows the time remaining
         private void DisplayTime()
         {

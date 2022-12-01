@@ -45,7 +45,7 @@ namespace UI
             if (eventData is SetScoreStats setScoreStats)
             {
                 //sets slider and current score
-                scoreSlider.maxValue = setScoreStats.TotalScore/100;
+                scoreSlider.maxValue = setScoreStats.RequiredScore/100;
                 currentScore = setScoreStats.StartingScore/100;
                 currentDisplayScore = currentScore;
             }
