@@ -1438,7 +1438,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c085a5a7bd505d459fb1eedeaf7315d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: NeedSceneName
+  sceneToLoad: GrayBoxLevelTwo
 --- !u!1 &706280532
 GameObject:
   m_ObjectHideFlags: 0
