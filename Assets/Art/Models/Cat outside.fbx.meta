@@ -3,7 +3,12 @@ guid: 21fea37c1817a4a46a82e714cc3608ad
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: jelly
+    second: {fileID: 2100000, guid: 87bdaeb065781ad4a8551c1608467046, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -52,7 +57,7 @@ ModelImporter:
     keepQuads: 0
     weldVertices: 1
     bakeAxisConversion: 0
-    preserveHierarchy: 0
+    preserveHierarchy: 1
     skinWeightsMode: 0
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
