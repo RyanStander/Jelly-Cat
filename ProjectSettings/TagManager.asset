@@ -17,7 +17,7 @@ TagManager:
   - CharacterCollider
   - SpringCollider
   - Environment
-  - 
+  - Cameras
   - 
   - 
   - 
