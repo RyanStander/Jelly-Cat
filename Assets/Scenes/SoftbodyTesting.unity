@@ -3623,7 +3623,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 21fea37c1817a4a46a82e714cc3608ad, type: 3}
       propertyPath: m_Name
-      value: Cat outside
+      value: CatCloth
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 21fea37c1817a4a46a82e714cc3608ad, type: 3}
       propertyPath: m_Layer
@@ -5988,8 +5988,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.68
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.77
+  m_Center: {x: 0, y: 0.2, z: 0}
 --- !u!135 &1085278113
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -6001,8 +6001,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.68
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.77
+  m_Center: {x: 0, y: 0.05, z: 0}
 --- !u!1 &1096466353
 GameObject:
   m_ObjectHideFlags: 0
