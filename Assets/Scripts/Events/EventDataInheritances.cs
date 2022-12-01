@@ -33,21 +33,4 @@ namespace Events
             CurrentScore = currentScore;
         }
     }
-    
-    public class SetTime : EventData
-    {
-        public readonly float Time;
-
-        public SetTime(float time) : base(EventType.SetTime)
-        {
-            Time = time;
-        }
-    }
-    
-    public class TimerExpired : EventData
-    {
-        public TimerExpired() : base(EventType.TimerExpired)
-        {
-        }
-    }
 }
