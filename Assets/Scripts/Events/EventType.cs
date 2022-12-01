@@ -11,5 +11,6 @@ namespace Events
 
         PlayerAttemptLevelCompletion,
         DidPlayerCompleteLevel,
+        PlayerDied,
     }
 }
