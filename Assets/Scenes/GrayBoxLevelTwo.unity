@@ -6713,7 +6713,7 @@ PrefabInstance:
       objectReference: {fileID: 13400000, guid: f782158c6042eec4399e1b8f76b35ed3, type: 2}
     - target: {fileID: 616504685239172292, guid: 4633a53ffaf6cc34f9e3229686aa665d, type: 3}
       propertyPath: jumpStrength
-      value: 15
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 616504685239172312, guid: 4633a53ffaf6cc34f9e3229686aa665d, type: 3}
       propertyPath: m_Name
