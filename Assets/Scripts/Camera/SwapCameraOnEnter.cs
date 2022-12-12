@@ -11,9 +11,7 @@ namespace Camera
         private void OnTriggerEnter(Collider other)
         {
             if (!other.gameObject.CompareTag("Player")) return;
-            
-            Debug.Log("player enter");
-            
+           
             foreach (var cameraToDisable in camerasToDisable)
             {
                 cameraToDisable.SetActive(false);
