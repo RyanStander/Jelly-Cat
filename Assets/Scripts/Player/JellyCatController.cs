@@ -24,8 +24,8 @@ namespace Player
         [SerializeField] [Range(0, 10)] private float climbDirectionGravity = 5;
 
         [Header("Player Jumping")]
-        [SerializeField] [Range(0, 10)] private float jumpStrength = 8f;
-        [SerializeField] [Range(0, 10)] private float angularWallJumpStrength = 6f;
+        [SerializeField] [Range(0, 20)] private float jumpStrength = 8f;
+        [SerializeField] [Range(0, 20)] private float angularWallJumpStrength = 6f;
         [SerializeField] [Range(0, 1)] private float jumpCooldown = 0.15f;
         private bool jumpRequested = false;
         private bool canJump = true;
@@ -177,7 +177,7 @@ namespace Player
             verticalInput = Input.GetAxis("Vertical");
 
             // Handle the player jumping & height position.
-            if (Input.GetButtonDown("Jump") && (playerGrounded || playerClimbing))
+            if (Input.GetButtonDown("Jump") && (playerGrounded || playerClimbing || currentMovementState == MovementState.groundClimb))
             {
                 jumpRequested = true;
             }
